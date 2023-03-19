@@ -1,1 +1,1 @@
-# map_human_sorting_jspsych
+# human_emotion_rate
