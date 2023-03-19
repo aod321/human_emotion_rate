@@ -9,3 +9,6 @@ example/js_out
 dist/
 lib/
 .vscode/
+package-lock.json
+package.json
+packaged/
