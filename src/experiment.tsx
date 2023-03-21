@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 1.0.0
+ * @version 1.0.4
  *
  * @assets assets/
  */
@@ -46,6 +46,23 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   // read question_list from output.json
   let question_list_path = assetPaths.misc[0];
   let question_list = await fetch(question_list_path).then((res) => res.json());
+    /* define instructions trial */
+    let instructions = {
+    type: ReactMobileInfoPlugin,
+    html: `
+      <h1>实验指导语</h1>
+      <p>您好，我们是来自【清华大学心理学系】的团队，正在对【情绪理解】进行调查。</p>
+      <p>本问卷包括40道题目，每道题目包括一个小故事和四个情绪选项。请您认真阅读故事，根据主人公感受到的情绪的程度，将100分分配到4个情绪选项中。</p>
+      <p>回答没有对错之分，请根据您的理解作答。</p>
+      <p>例题：最近李梅帮助她的一位同事完成一个非常难的工作。但是这位同事却抱怨李梅做的工作不是很好，李梅会觉得：愤怒: 50,失望: 20,委屈: 20, 后悔: 10</p>
+      <p>这个回答代表了：如果用100分代表江文此时所有的感受，那么江文觉得有50分的悲伤，20分的遗憾，20分的愤怒，10分的后悔。</p>
+      <p>我们保证：本研究的结果可能会在学术期刊/书籍上发表，或者用于教学。但是您的名字或者其他可以确认您的信息将不会在任何发表或教学的材料中出现，除非得到您的允许。</p>
+      <p>欢迎大家填写/转发本问卷！</p>
+    `,
+    button_text: '继续',
+    button_size: 'large',
+  };
+  timeline.push(instructions);
   let survey = {
     type: ReactMobileFormPlugin,
     title: '欢迎您来做实验',
