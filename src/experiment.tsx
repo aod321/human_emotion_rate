@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.2
+ * @version 2.0.3
  *
  * @assets assets/
  */
@@ -19,9 +19,9 @@ import '@nutui/nutui-react/dist/style.css'
 
 // 添加一个检测用户是否使用微信浏览器的函数
 function isWechatBrowser() {
-  if( typeof WeixinJSBridge !== "undefined" ) {
+  // if( typeof WeixinJSBridge !== "undefined" ) {
     return true;
-  }
+  // }
 }
 
 /**
@@ -85,6 +85,8 @@ export async function run({ assetPaths, input = {}, environment, title, version 
       type: ReactMobileRatePlugin,
       question: question.Story,
       emotion_names: question.Options,
+      completedQuestions: i,
+      totalQuestions: question_list.length,
       infoMessagePrefix: "当前总分为：", // Add infoMessagePrefix to the object
       errorMessagePrefix: "总分必须为10,而当前为:", // Add errorMessagePrefix to the object
       data:{
