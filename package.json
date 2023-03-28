@@ -11,14 +11,16 @@
     "@jspsych-contrib/plugin-mobileform-tsx": "file:jspsych-contrib/packages/plugin-mobileform-tsx",
     "@jspsych-contrib/plugin-mobilefourscore-tsx": "file:jspsych-contrib/packages/plugin-mobilefourscore-tsx",
     "@jspsych-contrib/plugin-mobileinfo-tsx": "file:jspsych-contrib/packages/plugin-mobileinfo-tsx",
+    "@jspsych-contrib/plugin-mobilerate-tsx": "file:jspsych-contrib/packages/plugin-mobilerate-tsx",
+    "@jspsych-contrib/plugin-newintro-tsx": "file:jspsych-contrib/packages/plugin-newintro-tsx",
     "@jspsych/plugin-fullscreen": "^1.1.2",
     "@jspsych/plugin-html-keyboard-response": "^1.1.2",
     "@jspsych/plugin-preload": "^1.1.2",
     "@nutui/nutui-react": "^1.4.6",
-    "antd-mobile": "^5.28.0",
     "jspsych": "^7.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-vant": "^3.2.4"
   },
   "devDependencies": {
     "@jspsych/plugin-survey-html-form": "^1.0.2",
