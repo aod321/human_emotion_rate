@@ -19,9 +19,9 @@ import '@nutui/nutui-react/dist/style.css'
 
 // 添加一个检测用户是否使用微信浏览器的函数
 function isWechatBrowser() {
-  // if( typeof WeixinJSBridge !== "undefined" ) {
+  if( typeof WeixinJSBridge !== "undefined" ) {
     return true;
-  // }
+  }
 }
 
 /**
