@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.0
+ * @version 2.0.2
  *
  * @assets assets/
  */
@@ -17,6 +17,13 @@ import ReactMobileRatePlugin from "@jspsych-contrib/plugin-mobilerate-tsx";
 import "react-vant/lib/index.css";
 import '@nutui/nutui-react/dist/style.css'
 
+// 添加一个检测用户是否使用微信浏览器的函数
+function isWechatBrowser() {
+  if( typeof WeixinJSBridge !== "undefined" ) {
+    return true;
+  }
+}
+
 /**
  * This function will be executed by jsPsych Builder and is expected to run the jsPsych experiment
  *
@@ -24,6 +31,11 @@ import '@nutui/nutui-react/dist/style.css'
  */
 export async function run({ assetPaths, input = {}, environment, title, version }) {
   const jsPsych = initJsPsych();
+  // 在这里检查浏览器是否是微信
+  if (!isWechatBrowser()) {
+    alert("请在微信中打开此页面");
+    return;
+  }
 
   const timeline: any = [];
   // pc_flag = !pc_flag;
