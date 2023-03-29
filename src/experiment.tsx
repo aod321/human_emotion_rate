@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.4
+ * @version 2.0.5
  *
  * @assets assets/
  */
@@ -93,6 +93,17 @@ export async function run({ assetPaths, input = {}, environment, title, version 
           { required: true, message: '请输入年龄' },
           { validator: customValidator, message: '必须输入数字' },
           { validator: valueRangeValidator, message: '必须输入0-200区间' },
+        ],
+      },
+      {
+        type: 'tel',
+        label: '手机号',
+        name: 'phonenumber',
+        maxlength: 11,
+        placeholder: '填真实手机号，仅用于红包核验',
+        required: true,
+        rules: [
+          { required: true, message: '请输入您的手机号(仅用于被试费红包核验)' },
         ],
       },
       {
