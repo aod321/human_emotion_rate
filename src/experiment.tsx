@@ -19,9 +19,17 @@ import '@nutui/nutui-react/dist/style.css'
 
 // 添加一个检测用户是否使用微信浏览器的函数
 function isWechatBrowser() {
-  // if( typeof WeixinJSBridge !== "undefined" ) {
-  return true;
-  // }
+  if (typeof WeixinJSBridge !== "undefined") {
+    return true;
+  }
+}
+// 函数校验
+const customValidator = (rule: any, value: string) => {
+  return /^\d+$/.test(value)
+}
+
+const valueRangeValidator = (rule: any, value: string) => {
+  return /^(\d{1,2}|1\d{2}|200)$/.test(value)
 }
 
 /**
@@ -54,10 +62,8 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     type: ReactNewIntroPlugin,
   };
   timeline.push(instructions);
-
   // Traverse the question list and add each question to the timeline
-  // for (let i = 0; i < question_list.length; i++) {
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < question_list.length; i++) {
     let question = question_list[i];
     let question_trial = {
       type: ReactMobileRatePlugin,
@@ -82,11 +88,19 @@ export async function run({ assetPaths, input = {}, environment, title, version 
         label: '年龄',
         name: 'age',
         placeholder: '请输入您的年龄',
+        required: true,
+        rules: [
+          { required: true, message: '请输入年龄' },
+          { validator: customValidator, message: '必须输入数字' },
+          { validator: valueRangeValidator, message: '必须输入0-200区间' },
+        ],
       },
       {
         type: 'radio',
         label: '性别',
         name: 'gender',
+        required: true,
+        rules: [{ required: true, message: '请选择性别' }],
         options: [
           { label: '男', value: 'male' },
           { label: '女', value: 'female' },
@@ -96,6 +110,8 @@ export async function run({ assetPaths, input = {}, environment, title, version 
         type: 'radio',
         label: '学历',
         name: 'education',
+        required: true,
+        rules: [{ required: true, message: '请选择学历' }],
         options: [
           { label: '初中及以下', value: 'junior_middle_school_and_below' },
           { label: '高中', value: 'senior_middle_school' },
@@ -108,6 +124,8 @@ export async function run({ assetPaths, input = {}, environment, title, version 
         type: 'radio',
         label: '职业',
         name: 'job',
+        required: true,
+        rules: [{ required: true, message: '请选择职业' }],
         options: [
           { label: '学生', value: 'student' },
           { label: '民营企业工作人员', value: 'private_sector_employee' },
