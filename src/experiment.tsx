@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.3
+ * @version 2.0.4
  *
  * @assets assets/
  */
@@ -19,9 +19,9 @@ import '@nutui/nutui-react/dist/style.css'
 
 // 添加一个检测用户是否使用微信浏览器的函数
 function isWechatBrowser() {
-  if( typeof WeixinJSBridge !== "undefined" ) {
-    return true;
-  }
+  // if( typeof WeixinJSBridge !== "undefined" ) {
+  return true;
+  // }
 }
 
 /**
@@ -49,14 +49,33 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   // read question_list from output.json
   let question_list_path = assetPaths.misc[0];
   let question_list = await fetch(question_list_path).then((res) => res.json());
-    /* define instructions trial */
-    let instructions = {
+  /* define instructions trial */
+  let instructions = {
     type: ReactNewIntroPlugin,
   };
   timeline.push(instructions);
+
+  // Traverse the question list and add each question to the timeline
+  // for (let i = 0; i < question_list.length; i++) {
+  for (let i = 0; i < 1; i++) {
+    let question = question_list[i];
+    let question_trial = {
+      type: ReactMobileRatePlugin,
+      question: question.Story,
+      emotion_names: question.Options,
+      completedQuestions: i,
+      totalQuestions: question_list.length,
+      infoMessagePrefix: "当前总分为：", // Add infoMessagePrefix to the object
+      errorMessagePrefix: "总分必须为10,而当前为:", // Add errorMessagePrefix to the object
+      data: {
+        "Story": question.Story
+      }
+    };
+    timeline.push(question_trial);
+  }
   let survey = {
     type: ReactMobileFormPlugin,
-    title: '欢迎您来做实验',
+    title: '请填写您的信息',
     items: [
       {
         type: 'number',
@@ -73,28 +92,38 @@ export async function run({ assetPaths, input = {}, environment, title, version 
           { label: '女', value: 'female' },
         ],
       },
+      {
+        type: 'radio',
+        label: '学历',
+        name: 'education',
+        options: [
+          { label: '初中及以下', value: 'junior_middle_school_and_below' },
+          { label: '高中', value: 'senior_middle_school' },
+          { label: '专科', value: 'junior_college' },
+          { label: '本科', value: 'undergraduate' },
+          { label: '研究生', value: 'postgraduate' },
+        ],
+      },
+      {
+        type: 'radio',
+        label: '职业',
+        name: 'job',
+        options: [
+          { label: '学生', value: 'student' },
+          { label: '民营企业工作人员', value: 'private_sector_employee' },
+          { label: '个体经营或创业者', value: 'individual_entrepreneur' },
+          { label: '党政机关或事业单位工作人员', value: 'government_or_public_institution_employee' },
+          { label: '国有企业工作人员', value: 'state_owned_enterprise_employee' },
+          { label: '退休人员', value: 'retiree' },
+          { label: '失业/无业/待业人员', value: 'unemployed' },
+          { label: '其他', value: 'others' },
+        ],
+      },
     ],
-    submit_button: '继续',
+    submit_button: '提交数据',
     submit_button_size: 'large',
   };
   timeline.push(survey);
-  // Traverse the question list and add each question to the timeline
-  for (let i = 0; i < question_list.length; i++) {
-    let question = question_list[i];
-    let question_trial = {
-      type: ReactMobileRatePlugin,
-      question: question.Story,
-      emotion_names: question.Options,
-      completedQuestions: i,
-      totalQuestions: question_list.length,
-      infoMessagePrefix: "当前总分为：", // Add infoMessagePrefix to the object
-      errorMessagePrefix: "总分必须为10,而当前为:", // Add errorMessagePrefix to the object
-      data:{
-        "Story": question.Story
-      }
-    };
-    timeline.push(question_trial);
-  }
   // Start the experiment
   await jsPsych.run(timeline);
   // Return the jsPsych instance so jsPsych Builder can access the experiment results (remove this
