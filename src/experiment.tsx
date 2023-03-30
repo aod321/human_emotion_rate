@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.5
+ * @version 2.0.7
  *
  * @assets assets/
  */
