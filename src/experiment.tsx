@@ -1,7 +1,7 @@
 /**
  * @title human_emotion_rate
  * @description human rate emoation
- * @version 2.0.7
+ * @version 2.1.0
  *
  * @assets assets/
  */
@@ -19,9 +19,9 @@ import '@nutui/nutui-react/dist/style.css'
 
 // 添加一个检测用户是否使用微信浏览器的函数
 function isWechatBrowser() {
-  if (typeof WeixinJSBridge !== "undefined") {
+  // if (typeof WeixinJSBridge !== "undefined") {
     return true;
-  }
+  // }
 }
 // 函数校验
 const customValidator = (rule: any, value: string) => {
@@ -70,15 +70,34 @@ export async function run({ assetPaths, input = {}, environment, title, version 
       question: question.Story,
       emotion_names: question.Options,
       completedQuestions: i,
-      totalQuestions: question_list.length,
+      totalQuestions: question_list.length+1,
       infoMessagePrefix: "当前总分为：", // Add infoMessagePrefix to the object
       errorMessagePrefix: "总分必须为10,而当前为:", // Add errorMessagePrefix to the object
       data: {
+        "Index": i,
         "Story": question.Story
       }
     };
     timeline.push(question_trial);
   }
+  // 防止乱做，随机抽查一道题
+  // random sample 1 question, and its index from question_list
+  let random_question = jsPsych.randomization.sampleWithoutReplacement(question_list,1)[0];
+  let random_question_index = question_list.indexOf(random_question);
+  let question_trial = {
+    type: ReactMobileRatePlugin,
+    question: random_question.Story,
+    emotion_names: random_question.Options,
+    completedQuestions: question_list.length,
+    totalQuestions: question_list.length+1,
+    infoMessagePrefix: "当前总分为：", // Add infoMessagePrefix to the object
+    errorMessagePrefix: "总分必须为10,而当前为:", // Add errorMessagePrefix to the object
+    data: {
+      "Index": random_question_index,
+      "Story": random_question.Story
+    }
+  };
+  timeline.push(question_trial);
   let survey = {
     type: ReactMobileFormPlugin,
     title: '请填写您的信息',
